@@ -413,7 +413,7 @@ public class dontTouchAnything : MonoBehaviour
             StartCoroutine(TheCountdown());
     }
     
-    void TwitchHandleForceSolve()
+    void TwitchHandleForcedSolve()
     {
 		ForceSolved = true;
 		Module.HandlePass();
