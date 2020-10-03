@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,6 +29,8 @@ public class dontTouchAnything : MonoBehaviour
     private bool strikeBypass;
     private bool Downcount;
     private string[] Ignored = { "Don't Touch Anything" };
+    
+    private bool ForceSolved = false;
 
     void Awake()
     {
@@ -393,7 +395,7 @@ public class dontTouchAnything : MonoBehaviour
                     Text[2].text = "";
                     Text[3].text = "";
                     yield return new WaitForSeconds(0.45f);
-                    if (Stage == MaxStage)
+                    if (Stage == MaxStage && !ForceSolved)
                     {
                         Module.HandlePass();
                         Debug.LogFormat("[Don't Touch Anything #{0}]: The module is bored. He solved himself just to get away from you not pressing him correctly.", moduleId);
@@ -410,4 +412,22 @@ public class dontTouchAnything : MonoBehaviour
         else if (FakeStrikes == 1)
             StartCoroutine(TheCountdown());
     }
+    
+    void TwitchHandleForceSolve()
+    {
+		ForceSolved = true;
+		Module.HandlePass();
+	}
+    
+    #pragma warning disable 414
+    public string TwitchHelpMessage = "Use '!{0} touch' for a free strike!";
+    #pragma warning restore 414
+    IEnumerator ProcessTwitchCommand(string command)
+    {
+		if(command.ToLowerInvariant()=="touch")
+		{
+			yield return null;
+			Button.OnInteract();
+		}
+	}
 }
